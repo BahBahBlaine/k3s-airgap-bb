@@ -18,4 +18,3 @@ systemctl restart k3s
 /usr/local/bin/k3s kubectl delete pods -n git --all && \
 /usr/local/bin/k3s kubectl delete gitrepository -A --all && \
 systemctl restart k3s
-

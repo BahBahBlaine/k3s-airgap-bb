@@ -3,19 +3,19 @@
 while getopts b:n: flag
 do
     case "${flag}" in
-      b) bigbang_version=${OPTARG};;
-      n) nodetype=${OPTARG};;
+        b) bigbang_version=${OPTARG};;
+        n) nodetype=${OPTARG};;
     esac
 done
 
 if [[ -z "$nodetype" ]] ; then
-  echo "You must specify a nodetype of server or agent with the -n flag"
-  exit 1
+    echo "You must specify a nodetype of server or agent with the -n flag"
+    exit 1
 fi
 
 if [[ -z "$bigbang_version" ]] ; then
-  echo "You must specify the Big Bang version  with the -b flag"
-  exit 1
+    echo "You must specify the Big Bang version  with the -b flag"
+    exit 1
 fi
 
 export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
@@ -26,28 +26,28 @@ git_mirror_url=http://git-http-backend.git.svc.cluster.local/git
 artifact_dir="/opt/artifacts"
 
 loadIronBankImages() {
-cp ${artifact_dir}/images/*.tar /var/lib/rancher/k3s/agent/images/
+    cp ${artifact_dir}/images/*.tar /var/lib/rancher/k3s/agent/images/
 }
 
 deployGitServer() {
-/usr/local/bin/kubectl apply -k ${artifact_dir}/git-http-backend
-/usr/local/bin/kubectl wait --for=condition=available --timeout "${WAIT_TIMEOUT}s" -n "git" "deployment/git-http-backend"
+    /usr/local/bin/kubectl apply -k ${artifact_dir}/git-http-backend
+    /usr/local/bin/kubectl wait --for=condition=available --timeout "${WAIT_TIMEOUT}s" -n "git" "deployment/git-http-backend"
 }
 
 deployFlux() {
-/usr/local/bin/kubectl get ns flux-system || /usr/local/bin/k3s kubectl create ns flux-system
-cp ${artifact_dir}/flux.yaml ${k3s_root_dir}/server/manifests/flux.yaml
-sleep 30
-/usr/local/bin/kubectl wait --for=condition=available --timeout "${WAIT_TIMEOUT}s" -n "flux-system" "deployment/helm-controller"
-/usr/local/bin/kubectl wait --for=condition=available --timeout "${WAIT_TIMEOUT}s" -n "flux-system" "deployment/source-controller"
-/usr/local/bin/kubectl wait --for=condition=available --timeout "${WAIT_TIMEOUT}s" -n "flux-system" "deployment/kustomize-controller"
-/usr/local/bin/kubectl wait --for=condition=available --timeout "${WAIT_TIMEOUT}s" -n "flux-system" "deployment/notification-controller"
+    /usr/local/bin/kubectl get ns flux-system || /usr/local/bin/k3s kubectl create ns flux-system
+    cp ${artifact_dir}/flux.yaml ${k3s_root_dir}/server/manifests/flux.yaml
+    sleep 30
+    /usr/local/bin/kubectl wait --for=condition=available --timeout "${WAIT_TIMEOUT}s" -n "flux-system" "deployment/helm-controller"
+    /usr/local/bin/kubectl wait --for=condition=available --timeout "${WAIT_TIMEOUT}s" -n "flux-system" "deployment/source-controller"
+    /usr/local/bin/kubectl wait --for=condition=available --timeout "${WAIT_TIMEOUT}s" -n "flux-system" "deployment/kustomize-controller"
+    /usr/local/bin/kubectl wait --for=condition=available --timeout "${WAIT_TIMEOUT}s" -n "flux-system" "deployment/notification-controller"
 }
 
 deployBB() {
-/usr/local/bin/kubectl get ns bigbang || /usr/local/bin/kubectl create ns bigbang
-cp ${artifact_dir}/bigbang-${bigbang_version}.tgz /var/lib/rancher/k3s/server/static/charts/
-cat << EOF > /var/lib/rancher/k3s/server/manifests/bigbang.yaml
+    /usr/local/bin/kubectl get ns bigbang || /usr/local/bin/kubectl create ns bigbang
+    cp ${artifact_dir}/bigbang-${bigbang_version}.tgz /var/lib/rancher/k3s/server/static/charts/
+    cat << EOF > /var/lib/rancher/k3s/server/manifests/bigbang.yaml
 apiVersion: helm.cattle.io/v1
 kind: HelmChart
 metadata:
@@ -239,10 +239,10 @@ EOF
 
 loadIronBankImages
 if [[ "$nodetype" == "server" ]]; then
-  systemctl restart k3s
-  deployGitServer
-  deployFlux
-  deployBB
+    systemctl restart k3s
+    deployGitServer
+    deployFlux
+    deployBB
 else
-  systemctl restart k3s-agent
+    systemctl restart k3s-agent
 fi
