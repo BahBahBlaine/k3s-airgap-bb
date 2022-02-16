@@ -121,8 +121,23 @@ grabImages () {
     done
 
     while read imageUrl; do
-        $ctr $ctr_args image pull -u $registry1_user:$registry1_pass ${imageUrl}
-        $ctr $ctr_args image export ${artifact_dir}/images/$(echo ${imageUrl} |sed 's/\//-/g' |sed 's/\:/-/g').tar ${imageUrl}
+        imageName=$(echo $imageUrl | cut -d '|' -f 1)
+        imageTags=$(echo $imageUrl | tr '|'  ' ') # tags includes name
+        creds=""
+        if [[ "$imageName" == *"registry1.dso.mil"* ]]; then
+            creds=" -u $registry1_user:$registry1_pass "
+        fi
+        $ctr $ctr_args image pull $creds ${imageName}
+
+        while IFS='|' read -ra tags; do
+            for tag in "${tags[@]}"; do
+                if [[ "$tag" != "$imageName" ]]; then
+                    $ctr $ctr_args image tag --force $imageName $tag
+                fi
+            done
+        done <<< "$imageUrl"
+
+        $ctr $ctr_args image export ${artifact_dir}/images/$(echo ${imageUrl} |sed 's/\//-/g' |sed 's/\:/-/g').tar ${imageTags}
     done <$images_to_download_list_file
 }
 

@@ -21,11 +21,10 @@ registry1.dso.mil/ironbank/opensource/prometheus-operator/prometheus-operator:v0
 registry1.dso.mil/ironbank/opensource/prometheus/alertmanager:v0.23.0
 registry1.dso.mil/ironbank/opensource/prometheus/node-exporter:v1.2.2
 registry1.dso.mil/ironbank/opensource/prometheus/prometheus:v2.31.1
-registry1.dso.mil/ironbank/rancher-federal/rke2/klipper-helm:v0.6.1-build20210616
-registry1.dso.mil/ironbank/rancher-federal/rke2/calico:v3.13.3-build20210223
-registry1.dso.mil/ironbank/rancher-federal/rke2/coredns:v1.6.9-build20210223
-registry1.dso.mil/ironbank/rancher-federal/rke2/flannel:v0.13.0-rancher1-build20210223
-registry1.dso.mil/ironbank/rancher-federal/rke2/k8s-metrics-server:v0.3.6-build20210223
+registry1.dso.mil/ironbank/rancher-federal/rke2/calico:v3.13.3-build20210223|rancher/hardened-calico:v3.13.3-build20210223
+registry1.dso.mil/ironbank/rancher-federal/rke2/coredns:v1.6.9-build20210223|rancher/hardened-coredns:v1.6.9-build20210223
+registry1.dso.mil/ironbank/rancher-federal/rke2/flannel:v0.13.0-rancher1-build20210223|rancher/hardened-flannel:v0.13.0-rancher1-build20210223
+registry1.dso.mil/ironbank/rancher-federal/rke2/k8s-metrics-server:v0.3.6-build20210223|rancher/hardened-k8s-metrics-server:v0.3.6-build20210223
 registry1.dso.mil/ironbank/rancher-federal/rke2/etcd:v3.4.13-k3s1-build20210223
 registry1.dso.mil/ironbank/rancher-federal/rke2/hardened-kubernetes:v1.21.3-rke2r1-build20210721
 registry1.dso.mil/ironbank/rancher-federal/rke2/pause:3.5
